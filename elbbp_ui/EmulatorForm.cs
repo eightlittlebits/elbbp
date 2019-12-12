@@ -19,8 +19,8 @@ namespace elbbp_ui
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Paused
         {
-            get { return !_running; }
-            set { _running = !value; }
+            get => !_running;
+            set => _running = !value;
         }
 
         protected override void OnLoad(EventArgs e)
