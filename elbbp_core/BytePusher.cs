@@ -9,14 +9,17 @@ namespace elbbp_core
 
         private readonly uint[] _palette;
         private readonly uint[] _frameBuffer;
+        private readonly byte[] _audioBuffer;
 
         private byte[] _memory;
 
         public uint[] GetFrameBuffer() => _frameBuffer;
+        public byte[] GetAudioBuffer() => _audioBuffer;
 
         public BytePusher()
         {
             _frameBuffer = new uint[256 * 256];
+            _audioBuffer = new byte[256];
             _palette = new uint[256];
 
             GeneratePalette();
@@ -78,6 +81,17 @@ namespace elbbp_core
                 {
                     _frameBuffer[yy * 256 + xx] = _palette[_memory[rowBase | xx]];
                 }
+            }
+
+            int audioBaseAddress = _memory[6] << 16 | _memory[7] << 8;
+
+            Buffer.BlockCopy(_memory, audioBaseAddress, _audioBuffer, 0, 256);
+
+            for (int n = 0; n < _audioBuffer.Length; n++)
+            {
+                // samples provided to audio api are unsigned with a silence level of
+                // 0x80 so offset the signed values from BytePusher
+                _audioBuffer[n] = (byte)(_audioBuffer[n] + 0x80);
             }
         }
 
