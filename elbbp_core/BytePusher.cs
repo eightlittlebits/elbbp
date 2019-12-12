@@ -51,18 +51,20 @@ namespace elbbp_core
             _memory[1] = (byte)input;
 
             // read 3 byte big endian program counter
-            int pc = _memory[2] << 16 | _memory[3] << 8 | _memory[4];
+            int pc = Read24BitWord(_memory, 2);
             int i = 65536;
 
             // run a frames worth of instructions
             do
             {
-                int a = _memory[pc + 0] << 16 | _memory[pc + 1] << 8 | _memory[pc + 2];
-                int b = _memory[pc + 3] << 16 | _memory[pc + 4] << 8 | _memory[pc + 5];
+                // An instruction consists of 3 big-endian 24-bit addresses A,B,C stored consecutively in memory.
+                // The operation performed is: Copy 1 byte from A to B, then jump to C.
+                int a = Read24BitWord(_memory, pc);
+                int b = Read24BitWord(_memory, pc + 3);
 
                 _memory[b] = _memory[a];
 
-                pc = _memory[pc + 6] << 16 | _memory[pc + 7] << 8 | _memory[pc + 8];
+                pc = Read24BitWord(_memory, pc + 6);
             } while (--i > 0);
 
             // copy pixel data to framebuffer, performing palette lookup
@@ -74,9 +76,14 @@ namespace elbbp_core
 
                 for (int xx = 0; xx < 256; xx++)
                 {
-                    _frameBuffer[yy * 256 + xx] = _palette[_memory[rowBase | pixelBase | xx]];
+                    _frameBuffer[yy * 256 + xx] = _palette[_memory[rowBase | xx]];
                 }
             }
+        }
+
+        private static int Read24BitWord(byte[] data, int offset)
+        {
+            return data[offset + 0] << 16 | data[offset + 1] << 8 | data[offset + 2];
         }
     }
 }
