@@ -25,6 +25,7 @@ namespace elbbp_ui
         private double _lastFrameTime;
 
         private GdiBitmap _backBuffer;
+        private WaveFileWriter _waveFile;
 
         private BytePusher _bytePusher;
         private ushort _inputState;
@@ -46,6 +47,7 @@ namespace elbbp_ui
             ClientSize = new System.Drawing.Size(DisplayWidth * 2, DisplayHeight * 2);
 
             _backBuffer = new GdiBitmap(DisplayHeight, DisplayWidth);
+            _waveFile = new WaveFileWriter(File.Open("waveout.wav", FileMode.Create), new WaveFormat(15360, 8, 1));
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -119,6 +121,7 @@ namespace elbbp_ui
             _bytePusher.RunFrame(_inputState);
 
             // render
+            OutputAudio();
             RenderDisplayToDisplayBuffer();
             UpdateWindow();
 
@@ -126,6 +129,13 @@ namespace elbbp_ui
             WaitForFrameTime();
 
             Text = string.Format("{0} - {1:00.0}fps", ProgramNameVersion, 1 / _lastFrameTime);
+        }
+
+        private void OutputAudio()
+        {
+            byte[] outputbuffer = _bytePusher.GetAudioBuffer();
+
+            _waveFile.Write(outputbuffer, 0, outputbuffer.Length);
         }
 
         private unsafe void RenderDisplayToDisplayBuffer()
@@ -229,6 +239,7 @@ namespace elbbp_ui
                     components.Dispose();
                 }
 
+                _waveFile.Dispose();
                 _backBuffer.Dispose();
             }
 
