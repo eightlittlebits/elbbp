@@ -4,6 +4,17 @@
 
 An implementation of the BytePusher virtual machine in C#
 
+<p align="center">
+  <img src="https://eightlittlebits.github.io/elbbp/screenshots/palette-test.png" />
+  <img src="https://eightlittlebits.github.io/elbbp/screenshots/scrolling-logo.png" />
+  <img src="https://eightlittlebits.github.io/elbbp/screenshots/sine-scroller.png" />
+</p>
+<p align="center">
+  <img src="https://eightlittlebits.github.io/elbbp/screenshots/sprites.png" />
+  <img src="https://eightlittlebits.github.io/elbbp/screenshots/audio-test.png" />
+  <img src="https://eightlittlebits.github.io/elbbp/screenshots/nyan.png" />
+</p>
+
 ## why
 
 It made for a fun afternoon project. Failing to make progress on my other emulator projects recently I though it might be fun to take on a simple one that could actually be "finished" quickly.
