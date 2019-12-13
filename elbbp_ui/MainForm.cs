@@ -25,6 +25,7 @@ namespace elbbp_ui
         private double _lastFrameTime;
 
         private GdiBitmap _backBuffer;
+        private DirectSoundAudioDevice<byte> _audioDevice;
 
         private BytePusher _bytePusher;
         private ushort _inputState;
@@ -37,13 +38,16 @@ namespace elbbp_ui
         protected override void Initialise()
         {
             PrepareUserInterface();
+
+            _audioDevice = new DirectSoundAudioDevice<byte>(Handle, 256 * 60, 1);
+            _audioDevice.Play();
         }
 
         private void PrepareUserInterface()
         {
             Text = $"{ProgramNameVersion}";
 
-            ClientSize = new System.Drawing.Size(DisplayWidth * 2, DisplayHeight * 2);
+            ClientSize = new System.Drawing.Size(DisplayWidth, DisplayHeight);
 
             _backBuffer = new GdiBitmap(DisplayHeight, DisplayWidth);
         }
@@ -119,6 +123,7 @@ namespace elbbp_ui
             _bytePusher.RunFrame(_inputState);
 
             // render
+            OutputAudio();
             RenderDisplayToDisplayBuffer();
             UpdateWindow();
 
@@ -127,6 +132,8 @@ namespace elbbp_ui
 
             Text = string.Format("{0} - {1:00.0}fps", ProgramNameVersion, 1 / _lastFrameTime);
         }
+
+        private void OutputAudio() => _audioDevice.QueueAudio(_bytePusher.GetAudioBuffer());
 
         private unsafe void RenderDisplayToDisplayBuffer()
         {

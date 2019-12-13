@@ -25,6 +25,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SharpDX.DirectSound" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\elbbp_core\elbbp_core.csproj" />
   </ItemGroup>
 

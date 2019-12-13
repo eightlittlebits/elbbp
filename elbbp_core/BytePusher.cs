@@ -19,9 +19,11 @@ namespace elbbp_core
         public BytePusher()
         {
             _frameBuffer = new uint[256 * 256];
-            _audioBuffer = new byte[256];
-            _palette = new uint[256];
 
+            _audioBuffer = new byte[256];
+            Array.Fill<byte>(_audioBuffer, 0x80);
+
+            _palette = new uint[256];
             GeneratePalette();
         }
 
