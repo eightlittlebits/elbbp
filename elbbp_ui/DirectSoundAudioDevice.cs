@@ -9,6 +9,8 @@ namespace elbbp_ui
     {
         private bool _disposed = false;
 
+        private readonly T _silence;
+
         private DirectSound _directSound;
         private PrimarySoundBuffer _primarySoundBuffer;
 
@@ -16,10 +18,13 @@ namespace elbbp_ui
         private int _soundBufferLength;
         private int _soundBufferCursor = -1;
 
-        public DirectSoundAudioDevice(IntPtr windowHandle, int sampleRate, int channelCount)
+        public DirectSoundAudioDevice(IntPtr windowHandle, int sampleRate, int channelCount, T silence)
         {
+            _silence = silence;
+
             InitialiseDirectSound(windowHandle, sampleRate, channelCount);
         }
+
 
         private unsafe void InitialiseDirectSound(IntPtr windowHandle, int sampleRate, int channelCount)
         {
@@ -47,6 +52,19 @@ namespace elbbp_ui
             };
 
             _soundBuffer = new SecondarySoundBuffer(_directSound, secondaryBufferDescription);
+            FillBuffer(_soundBuffer, _silence);
+        }
+
+        private void FillBuffer(SecondarySoundBuffer buffer, T value)
+        {
+            DataStream ds = buffer.Lock(0, 0, LockFlags.EntireBuffer, out DataStream ds2);
+
+            for (int i = 0; i < ds.Length; i++)
+            {
+                ds.Write(value);
+            }
+
+            buffer.Unlock(ds, ds2);
         }
 
         public void Play() => _soundBuffer.Play(0, PlayFlags.Looping);

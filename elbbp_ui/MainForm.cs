@@ -39,7 +39,7 @@ namespace elbbp_ui
         {
             PrepareUserInterface();
 
-            _audioDevice = new DirectSoundAudioDevice<byte>(Handle, 256 * 60, 1);
+            _audioDevice = new DirectSoundAudioDevice<byte>(Handle, 256 * 60, 1, 0x80);
             _audioDevice.Play();
         }
 
