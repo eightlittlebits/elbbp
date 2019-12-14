@@ -1,4 +1,4 @@
-# elbbp
+# elbbp - [![Build status](https://ci.appveyor.com/api/projects/status/fo9v56l3j40519e2?svg=true)](https://ci.appveyor.com/project/eightlittlebits/elbbp)
 
 ## what
 
