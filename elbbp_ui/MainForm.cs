@@ -237,6 +237,9 @@ namespace elbbp_ui
                 }
 
                 _backBuffer.Dispose();
+
+                _audioDevice.Stop();
+                _audioDevice.Dispose();
             }
 
             base.Dispose(disposing);

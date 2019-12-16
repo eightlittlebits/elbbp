@@ -25,7 +25,6 @@ namespace elbbp_ui
             InitialiseDirectSound(windowHandle, sampleRate, channelCount);
         }
 
-
         private unsafe void InitialiseDirectSound(IntPtr windowHandle, int sampleRate, int channelCount)
         {
             var waveFormat = new WaveFormat(sampleRate, sizeof(T) * 8, channelCount);
