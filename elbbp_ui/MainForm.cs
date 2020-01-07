@@ -217,6 +217,7 @@ namespace elbbp_ui
 
         private void RunBytePusherWithRom(byte[] rom)
         {
+            _audioDevice.Reset();
             _bytePusher = new BytePusher();
             _bytePusher.LoadRom(rom);
             _running = true;

@@ -68,6 +68,15 @@ namespace elbbp_ui
 
         public void Play() => _soundBuffer.Play(0, PlayFlags.Looping);
 
+        public void Reset()
+        {
+            Stop();
+            FillBuffer(_soundBuffer, _silence);
+            _soundBuffer.CurrentPosition = 0;
+            _soundBufferCursor = -1;
+            Play();
+        }
+
         public void Stop() => _soundBuffer.Stop();
 
         public unsafe void QueueAudio(T[] samples)
