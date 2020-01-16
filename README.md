@@ -94,7 +94,7 @@ Bytepusher uses a 4x4 hex keyboard, the same layout as CHIP-8. This is mapped as
 
 MIT License
 
-Copyright (c) 2019 David Parrott
+Copyright (c) 2019-2020 David Parrott
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
